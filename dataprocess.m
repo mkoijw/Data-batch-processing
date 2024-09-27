@@ -3,13 +3,13 @@ cd('E:\EPofGM\Data_batch_processing\code')
 infilePath = 'E:\EPofGM\Global_geomagnetic_model\WMM2020\WMM2020_Windows\WMM2020_Windows\bin\input.txt';
 outfilePath = 'E:\EPofGM\Global_geomagnetic_model\WMM2020\WMM2020_Windows\WMM2020_Windows\bin\output.txt';
 
-%% 从sp3文件提取位置 INTF km
-Pos = sp32Pos(MODA_SC_1B_filename);
+%% 从sp3文件提取位置 ITRF km
+[Pos, ~] = sp32Pos(MODA_SC_1B_filename);
 %% 将位置转为WMM_file.exe输入格式
 fileID = fopen(infilePath, 'w');
 date = '2024.8';
 altitude_type = 'E';
-lla_data = intf2lla(Pos);
+lla_data = itrf2lla(Pos);
 for i = 1:size(lla_data, 1)
     altitude = lla_data(i, 3);
     latitude = lla_data(i, 1);
@@ -47,4 +47,4 @@ B_NEC = horzcat(B_NEC_cell{:})';
 % %Pos是0 0 18开始 B_NEC是0 0 0开始
 % trainData = [Pos(1:86382,:),B_NEC(19:86400,:),WMM2020_B_NEC(1:86382,:),WMM_error];
 WMM_error = B_NEC - WMM2020_B_NEC;
-data = [Pos,B_NEC,WMM2020_B_NEC,WMM_error];
+data = [Pos, B_NEC, WMM2020_B_NEC, WMM_error];
